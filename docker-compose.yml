@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: kachat_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kachat_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - kachat_net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kachat_backend
+    environment:
+      DATABASE_URL: "jdbc:postgresql://db:5432/kachat_db"
+      DATABASE_USER: "postgres"
+      DATABASE_PASSWORD: "postgres"
+      DATABASE_DRIVER: "org.postgresql.Driver"
+      JWT_SECRET: "JWT_SECRET"
+      JWT_ISSUER: "com.kachat"
+      JWT_AUDIENCE: "kachatAudience"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - kachat_net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: kachat_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - kachat_net
+
+volumes:
+  db-data:
+
+networks:
+  kachat_net:
+    driver: bridge
