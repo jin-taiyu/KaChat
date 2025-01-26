@@ -2,6 +2,10 @@
 
 KaChat is a modern, real-time chat application built with Vue.js for the frontend and Kotlin with Ktor for the backend. It provides an online chatting experience with features like private messaging, public chat rooms, and more.
 
+![login-page](docs/login-page.png)
+
+![main-page](docs/main-page.png)
+
 ## ✨ Features
 
 - **Real-time Messaging**: Instant message delivery with WebSocket support
